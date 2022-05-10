@@ -13,7 +13,7 @@ const NoteList = (props) => {
     });
     console.log(a);
     // props.noteList.splice(a, a + 1);
-    // console.log(props.noteList);
+    // console.log(props.noteList)
   };
   const renderNotes = () => {
     return props.noteList.map((val) => {
