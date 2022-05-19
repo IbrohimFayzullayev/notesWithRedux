@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { addNoteAction } from "../actions";
+import { addNoteAction, editNoteAction } from "../actions";
 
 const AddNote = (props) => {
   const [text, setText] = useState("");
@@ -9,6 +9,7 @@ const AddNote = (props) => {
     let time = new Date().toLocaleTimeString();
     let date = new Date().toLocaleDateString();
     let id = String(Date.now()).slice(7);
+
     return props.addNoteAction({ text, time, date, id });
   };
   return (
@@ -40,4 +41,4 @@ const AddNote = (props) => {
 };
 
 const getMyState = (state) => state;
-export default connect(getMyState, { addNoteAction })(AddNote);
+export default connect(getMyState, { addNoteAction, editNoteAction })(AddNote);
