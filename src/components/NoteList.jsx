@@ -1,51 +1,110 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
-import { removeNoteAction } from "../actions";
+import { removeNoteAction, editNoteAction } from "../actions";
 
+let editId;
+let editText = "";
 const NoteList = (props) => {
-  console.log(props);
-
+  const [text, setText] = useState("");
+  const [check, setCheck] = useState(0);
   const removeNote = (e) => {
     let a = "";
-    let found = props.noteList.find((el, index) => {
+    props.noteList.find((el, index) => {
       a = index;
       return el.id === e.id;
     });
-    console.log(a);
-    // props.noteList.splice(a, a + 1);
-    // console.log(props.noteList);
+
+    return props.removeNoteAction(a);
   };
-  const renderNotes = () => {
-    return props.noteList.map((val) => {
-      return (
-        <div
-          key={val.id}
-          className="ui card three wide column"
-          style={{ margin: "14px 0" }}
-        >
-          <div className="content">
-            <div className="header">
-              {val.time} , {val.date}
-            </div>
-          </div>
-          <div className="content" style={{ height: "120px" }}>
-            <h4 className="ui sub header">{val.text}</h4>
-          </div>
-          <div className="extra content" style={{ display: "flex" }}>
-            <button className="ui inverted green button">Edit</button>
-            <button
-              onClick={() => removeNote(val)}
-              className="ui inverted red button"
-            >
-              Remove
-            </button>
+
+  const editNoteList = (e) => {
+    editText = e.text;
+    editId = e.id;
+    setCheck(1);
+  };
+
+  const formSubmit = () => {
+    setCheck(0);
+  };
+  const editNote = () => {
+    return (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          formSubmit(e);
+        }}
+      >
+        <div className="field">
+          <textarea
+            onChange={(e) => {
+              setText(e.target.value);
+            }}
+            style={{
+              resize: "none",
+              border: "0.1px solid #f0f0f0",
+              outline: "none",
+              height: "90px",
+              marginBottom: "20px",
+            }}
+            defaultValue={editText}
+          ></textarea>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <button type="submit" className="ui inverted button  green">
+            Save
+          </button>
+          <p>Remaining: {text.length ? 300 - text.length : "300"}</p>
+        </div>
+      </form>
+    );
+  };
+
+  const editRemoveAdd = (val, text) => {
+    return (
+      <div>
+        <div className="content" style={{ height: "120px" }}>
+          <h4 className="ui sub header">{text ? text : val.text}</h4>
+        </div>
+        <div className="extra content" style={{ display: "flex" }}>
+          <button
+            onClick={() => editNoteList(val)}
+            className="ui inverted green button"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => removeNote(val)}
+            className="ui inverted red button"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    );
+  };
+  return props.noteList.map((val) => {
+    return (
+      <div
+        key={val.id}
+        className="ui card three wide column"
+        style={{ margin: "14px 0" }}
+      >
+        <div className="content">
+          <div className="header">
+            {val.time} , {val.date}
           </div>
         </div>
-      );
-    });
-  };
-  return renderNotes();
+        {check && editId === val.id
+          ? editNote()
+          : editId === val.id
+          ? editRemoveAdd(val, text)
+          : editRemoveAdd(val)}
+      </div>
+    );
+  });
 };
 
 const getMyState = (state) => state;
-export default connect(getMyState)(NoteList);
+export default connect(getMyState, { removeNoteAction, editNoteAction })(
+  NoteList
+);
