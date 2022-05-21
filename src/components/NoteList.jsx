@@ -67,7 +67,9 @@ const NoteList = (props) => {
         </div>
         <div className="extra content" style={{ display: "flex" }}>
           <button
-            onClick={() => editNoteList(val)}
+            onClick={() => {
+              editNoteList(val);
+            }}
             className="ui inverted green button"
           >
             Edit
@@ -83,6 +85,9 @@ const NoteList = (props) => {
     );
   };
   return props.noteList.map((val) => {
+    if (val.id === editId) {
+      val.text = text;
+    }
     return (
       <div
         key={val.id}
