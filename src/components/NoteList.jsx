@@ -4,12 +4,20 @@ import { removeNoteAction, editNoteAction } from "../actions";
 
 let editId;
 let editText = "";
+
 const NoteList = (props) => {
+  let storedNames = JSON.parse(localStorage.getItem("notes"));
+  let arr = [];
+  if (storedNames) {
+    arr = storedNames;
+  } else {
+    arr = props.noteList;
+  }
   const [text, setText] = useState("");
   const [check, setCheck] = useState(0);
   const removeNote = (e) => {
     let a = "";
-    props.noteList.find((el, index) => {
+    arr.find((el, index) => {
       a = index;
       return el.id === e.id;
     });
@@ -25,6 +33,7 @@ const NoteList = (props) => {
 
   const formSubmit = () => {
     setCheck(0);
+    localStorage.setItem("notes", JSON.stringify(arr));
   };
   const editNote = () => {
     return (
@@ -84,7 +93,7 @@ const NoteList = (props) => {
       </div>
     );
   };
-  return props.noteList.map((val) => {
+  return arr.map((val) => {
     if (val.id === editId) {
       val.text = text;
     }
