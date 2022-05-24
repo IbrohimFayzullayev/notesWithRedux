@@ -11,13 +11,25 @@ const noteListReducer = (
 ) => {
   switch (note.type) {
     case "ADD":
-      return (history = [note.payload, ...history]);
+      history = [note.payload, ...history];
+      let storedNames = JSON.parse(localStorage.getItem("notes"));
+      let ar = [];
+      if (storedNames) {
+        ar = [note.payload, ...storedNames];
+      } else {
+        ar = history;
+      }
+      localStorage.setItem("notes", JSON.stringify(ar));
+      return history;
     case "REMOVE":
-      let arr = history.filter((val, id) => {
+      let storedName = JSON.parse(localStorage.getItem("notes"));
+      let arr = storedName.filter((val, id) => {
         return id !== note.payload;
       });
-      return (history = arr);
+      localStorage.setItem("notes", JSON.stringify(arr));
+      return arr;
     case "EDIT":
+      localStorage.setItem("notes", JSON.stringify(history));
       return history;
     default:
       return history;
