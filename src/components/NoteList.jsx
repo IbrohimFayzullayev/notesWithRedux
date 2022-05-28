@@ -4,7 +4,7 @@ import { removeNoteAction, editNoteAction } from "../actions";
 
 let editId;
 let editText = "";
-
+// hello
 const NoteList = (props) => {
   let storedNames = JSON.parse(localStorage.getItem("notes"));
   let arr = [];
