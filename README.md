@@ -1,3 +1,7 @@
+## This project netfily link below 👇
+<p> https://notes-with-redux.netlify.app/ ✔ </p>
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
